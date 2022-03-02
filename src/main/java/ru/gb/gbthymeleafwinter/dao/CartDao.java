@@ -4,7 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.gb.gbthymeleafwinter.entity.Cart;
-import ru.gb.gbthymeleafwinter.entity.Product;
 import ru.gb.gbthymeleafwinter.entity.enums.Status;
 
 import java.util.List;
