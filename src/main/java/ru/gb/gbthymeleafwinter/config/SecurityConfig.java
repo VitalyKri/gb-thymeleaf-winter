@@ -3,17 +3,12 @@ package ru.gb.gbthymeleafwinter.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
@@ -25,9 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // разрешить всем
         http.authorizeRequests((requests) ->
                 {
-                    requests.antMatchers(HttpMethod.GET,"/product/{productId}").permitAll();
+                    requests.antMatchers(HttpMethod.GET, "/product/{productId}").permitAll();
                     requests.antMatchers("/product/all").permitAll();
-                    requests.antMatchers(HttpMethod.POST,"/product").hasRole("ADMIN");
+                    requests.antMatchers("/fail").permitAll();
+                    requests.antMatchers(HttpMethod.POST, "/product").hasRole("ADMIN");
                 }
         );
 
@@ -36,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated();
         });
         http.formLogin();
-        http.httpBasic();
+
     }
 
 
@@ -55,9 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 
     // бин позволяющий авторизовываться, пользователь как объект в java
 //
@@ -80,3 +78,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new InMemoryUserDetailsManager(user, admin);
 //    }
 }
+
+
