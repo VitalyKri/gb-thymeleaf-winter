@@ -2,10 +2,14 @@ package ru.gb.gbthymeleafwinter.entity.security;
 
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -27,9 +31,13 @@ public class AccountUser implements UserDetails {
 
     @Singular
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
+    @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "USER_ID",referencedColumnName = "ID"),
-    inverseJoinColumns = @JoinColumn(name = "AUTHORITY_ID",referencedColumnName = "ID"))
+    inverseJoinColumns = @JoinColumn(name = "ROLE_ID",referencedColumnName = "ID"))
+    private Set<AccountRole> roles;
+
+
+    @Transient
     private Set<Authority> authorities;
 
 
@@ -41,5 +49,24 @@ public class AccountUser implements UserDetails {
     private boolean credentialsNonExpired = true;
     @Builder.Default
     private boolean enabled = true;
+
+
+    // приводим роли к авторити что бы можно было получить по имени роли и имени авторити
+    public Set<GrantedAuthority> getAuthorities(){
+        Set<GrantedAuthority> authorities = this.roles.stream()
+                .map(AccountRole::getAuthorities)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+        authorities.addAll(mapRolesToAuthorities(this.roles));
+        return authorities;
+
+    }
+
+    // записываем имена всех ролей в переменную авторити
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<AccountRole> roles){
+        return roles.stream()
+                .map(role-> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
+    }
 
 }

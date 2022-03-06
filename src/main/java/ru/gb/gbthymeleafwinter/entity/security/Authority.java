@@ -19,13 +19,15 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String role;
+    @Column(name = "permission")
+    private String permission;
+
 
     @ManyToMany(mappedBy = "authorities")
-    private Set<AccountUser> accountUsers;
+    private Set<AccountRole> roles;
 
     @Override
     public String getAuthority() {
-        return this.role;
+        return this.permission;
     }
 }

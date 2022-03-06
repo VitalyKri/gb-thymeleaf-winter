@@ -24,10 +24,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Наименование</th>
                 <th scope="col">Цена</th>
-                <th scope="col" sec:authorize="hasAuthority('ADMIN')">Редактировать</th>
-                <th scope="col" sec:authorize="hasAuthority('ADMIN')">Удалить</th>
-                <th scope="col" sec:authorize="hasAuthority('USER')|| isAnonymous()">Просмотр</th>
-                <th scope="col" sec:authorize="hasAuthority('USER')|| isAnonymous()">Корзина</th>
+                <th scope="col" sec:authorize="hasAnyAuthority('product.create','product.update')">Редактировать</th>
+                <th scope="col" sec:authorize="hasAuthority('product.delete')">Удалить</th>
+                <th scope="col" sec:authorize="hasAuthority('product.read')">Просмотр</th>
+                <th scope="col" sec:authorize="hasAuthority('cart.update')">Корзина</th>
             </tr>
             </thead>
             <tbody>
@@ -38,20 +38,17 @@
                 <th scope="row" th:text="${i.count}"></th>
                 <td th:text="${product.title}"></td>
                 <td th:text="${product.cost}"></td>
-                <td sec:authorize="hasAuthority('ADMIN')">
+                <td sec:authorize="hasAnyAuthority('product.create','product.update')">
                     <a type="button" th:href="@{/product(id=${product.id})}" class="btn btn-warning" >Редактировать</a>
                 </td>
-                <td sec:authorize="hasAuthority('ADMIN')">
+                <td sec:authorize="hasAuthority('product.delete')">
                     <a type="button" th:href="@{/product/delete(id=${product.id})}" class="btn btn-danger" >Удалить</a>
                 </td>
-                <td sec:authorize="hasAuthority('USER')|| isAnonymous()">
+                <td sec:authorize="hasAuthority('product.read')">
                     <a type="button" th:href="@{'/product/' + ${product.id} }" class="btn btn-danger" >Просмотр</a>
                 </td>
-                <td sec:authorize="hasAuthority('USER')">
+                <td sec:authorize="hasAuthority('cart.update')">
                     <a type="button" th:href="@{/cart/addProduct(id=${product.id})}" class="btn btn-warning" >Добавить в корзину</a>
-                </td>
-                <td sec:authorize="isAnonymous()">
-                    <a type="button" th:href="@{/fail}" class="btn btn-warning" >Добавить в корзину</a>
                 </td>
 
             </tr>

@@ -4,12 +4,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import ru.gb.gbthymeleafwinter.service.ProductService;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @SpringBootApplication
+
 public class GbThymeleafWinterApplication {
 
 

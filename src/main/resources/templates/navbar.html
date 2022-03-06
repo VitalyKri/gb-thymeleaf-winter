@@ -19,10 +19,10 @@
                     <li class="nav-item">
                         <a class="nav-link"  th:classappend="${activeTab == 'ProductList' ? 'active' : ''}" aria-current="page" th:href="@{/product/all}">Список продуктов</a>
                     </li>
-                    <li class="nav-item"  sec:authorize="hasAuthority('ADMIN')">
+                    <li class="nav-item"  sec:authorize="hasAuthority('product.create')">
                         <a class="nav-link"  th:classappend="${activeTab == 'ProductForm' ? 'active' : ''}" th:href="@{/product}">Добавить продукт</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasAuthority('cart.read')">
                         <a class="nav-link"  th:classappend="${activeTab == 'ProductCart' ? 'active' : ''}" th:href="@{/cart}">Корзина</a>
                     </li>
 
